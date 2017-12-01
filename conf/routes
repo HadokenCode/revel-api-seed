@@ -13,9 +13,12 @@ GET     /                                       App.Index
 POST    /login                                  Auth.Login
 POST    /register                               Auth.Register
 
-# Nodes
+# Nodes (CRUD exemple)
 GET     /nodes                                  Node.List
-POST    /nodes                                  Node.Create
+POST    /node                                   Node.Create
+GET     /node/:id                               Node.Read
+UPDATE  /node/:id                               Node.Update
+DELETE  /node/:id                               Node.Delete
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

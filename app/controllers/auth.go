@@ -120,9 +120,7 @@ func encodeToken(email string) string {
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
-	tokenString, err := token.SignedString(hmacSecret)
-
-	fmt.Println(tokenString, err)
+	tokenString, _ := token.SignedString(hmacSecret)
 
 	return tokenString
 }
@@ -137,9 +135,7 @@ func decodeToken(tokenString string) (jwt.MapClaims, error) {
 		return hmacSecret, nil
 	})
 	claims, ok := token.Claims.(jwt.MapClaims)
-	if ok && token.Valid {
-		fmt.Println("email and exp:", claims["email"], claims["exp"])
-	} else {
+	if !(ok && token.Valid) {
 		log.Println(err)
 		return nil, err
 	}
@@ -147,23 +143,20 @@ func decodeToken(tokenString string) (jwt.MapClaims, error) {
 }
 
 func checkUser(c *revel.Controller) revel.Result {
-	// if user := MyCheckAuth(c); user == nil {
-	// 	c.Flash.Error("Please log in first")
-	// 	return c.Redirect(App.Index)
-	// }
+	// Read the token from Authorization Header then decode it
+	claims, err := decodeToken(c.Request.Header.Get("Authorization"))
 
-	token := c.Request.Header.Get("Authorization")
-	fmt.Println("checking user")
-	fmt.Println("token: " + token)
-	claims, err := decodeToken(token)
+	// if provided token is invalid
 	if err != nil {
 		msg := make(map[string]string)
 		msg["error"] = "wrong token"
 		c.Response.Status = http.StatusForbidden
 		return c.RenderJSON(msg)
 	}
+
 	// TODO : check for token validity
 	// TODO : check if user is_active
-	fmt.Println(claims)
+	fmt.Println(claims) // FIXME: remove
+
 	return nil
 }
