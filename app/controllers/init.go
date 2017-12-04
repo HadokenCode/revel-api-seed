@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"goseed/app/models"
+	"github.com/obitux/revel-api-seed/app/models"
 
 	gorm "github.com/revel/modules/orm/gorm/app"
 	"github.com/revel/revel"

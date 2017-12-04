@@ -6,13 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	"goseed/app/models"
-
-	"golang.org/x/crypto/bcrypt"
-
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/obitux/revel-api-seed/app/models"
 	gormc "github.com/revel/modules/orm/gorm/app/controllers"
 	"github.com/revel/revel"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Auth struct {
