@@ -7,13 +7,14 @@ module:testrunner
 # module:jobs
 
 
-GET     /                                       App.Index
+# Serve the latest build of Ionic example application
+GET     /                                       Static.Serve("examples/ionic/app/platforms/browser/www/index.html")
 
 # Authentication
 POST    /login                                  Auth.Login
 POST    /register                               Auth.Register
 
-# Nodes (CRUD exemple)
+# Nodes (CRUD example)
 GET     /nodes                                  Node.List
 POST    /node                                   Node.Create
 GET     /node/:id                               Node.Read
@@ -25,6 +26,8 @@ GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/*filepath                       Static.Serve("public")
+# Map static resources from the Ionic build folder to root path for static links compliance with Ionic
+GET     /*filepath                              Static.Serve("examples/ionic/app/platforms/browser/www")
 
 # Catch all
 #*       /:controller/:action                    :controller.:action
