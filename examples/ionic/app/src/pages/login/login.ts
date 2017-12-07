@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
+import { HttpHeaders } from '@angular/common/http';
 
-import { User } from '../../providers/providers';
+
+
+import { Api } from '../../providers/providers';
 import { MainPage } from '../pages';
 
 @IonicPage()
@@ -15,36 +18,40 @@ export class LoginPage {
   // If you're using the username field with or without email, make
   // sure to add it to the type
   account: { email: string, password: string } = {
-    email: 'test@example.com',
-    password: 'test'
+    email: 'demo@demo.com',
+    password: 'demo'
   };
 
   // Our translated text strings
   private loginErrorString: string;
 
   constructor(public navCtrl: NavController,
-    public user: User,
     public toastCtrl: ToastController,
-    public translateService: TranslateService) {
+    public translateService: TranslateService,
+    private api: Api) {
 
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
       this.loginErrorString = value;
     })
   }
 
-  // Attempt to login in through our User service
+  // Attempt to login
   doLogin() {
-    this.user.login(this.account).subscribe((resp) => {
+    this.api.login(this.account.email, this.account.password).subscribe(data => {
+      localStorage.setItem('user_id', data.user_id);
+      localStorage.setItem('user_name', data.user_name);
+      localStorage.setItem('user_email', this.account.email);
+      localStorage.setItem('user_token', data.token);
+      this.api.headers = new HttpHeaders().set('Authorization', data.token);
       this.navCtrl.push(MainPage);
-    }, (err) => {
-      this.navCtrl.push(MainPage);
-      // Unable to log in
+    }, err => {
       let toast = this.toastCtrl.create({
         message: this.loginErrorString,
         duration: 3000,
         position: 'top'
       });
       toast.present();
-    });
+    })
   }
+
 }

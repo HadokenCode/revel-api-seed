@@ -55,6 +55,8 @@ The directory structure of a generated Revel application:
 
     messages/         Message files
 
+    examples/         Frontend examples ready-to-work
+
     public/           Public static assets
         css/          CSS files
         js/           Javascript files

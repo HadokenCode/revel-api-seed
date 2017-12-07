@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
 
-import { User } from '../../providers/providers';
 import { MainPage } from '../pages';
+import { Api } from '../../providers/providers';
+
 
 @IonicPage()
 @Component({
@@ -24,9 +26,9 @@ export class SignupPage {
   private signupErrorString: string;
 
   constructor(public navCtrl: NavController,
-    public user: User,
     public toastCtrl: ToastController,
-    public translateService: TranslateService) {
+    public translateService: TranslateService,
+    private api: Api) {
 
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
       this.signupErrorString = value;
@@ -35,7 +37,12 @@ export class SignupPage {
 
   doSignup() {
     // Attempt to login in through our User service
-    this.user.signup(this.account).subscribe((resp) => {
+    this.api.register(this.account.email, this.account.password, this.account.name).subscribe((data) => {
+      localStorage.setItem('user_id', data.user_id);
+      localStorage.setItem('user_name', data.user_name);
+      localStorage.setItem('user_email', this.account.email);
+      localStorage.setItem('user_token', data.token);
+      this.api.headers = new HttpHeaders().set('Authorization', data.token);
       this.navCtrl.push(MainPage);
     }, (err) => {
 

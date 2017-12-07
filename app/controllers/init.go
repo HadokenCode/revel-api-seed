@@ -9,12 +9,11 @@ import (
 
 func initializeDB() {
 	gorm.DB.AutoMigrate(&models.User{})
-	var firstUser = models.User{Name: "Demo", Email: "demo@demo.com"}
+	var firstUser = models.User{Name: "Demo", Email: "demo@demo.com", Active: true}
 	firstUser.SetNewPassword("demo")
-	firstUser.Active = true
 	gorm.DB.Create(&firstUser)
 
-	gorm.DB.AutoMigrate(&models.Node{})
+	gorm.DB.AutoMigrate(&models.Item{})
 }
 
 func init() {

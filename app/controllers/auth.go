@@ -89,7 +89,7 @@ func (c Auth) Login() revel.Result {
 	var user = models.User{Email: email}
 	c.Txn.First(&user, "email = ?", email)
 	if user.ID == 0 {
-		c.Response.Status = http.StatusConflict
+		c.Response.Status = http.StatusForbidden
 		return c.RenderJSON("invalid email or password")
 	}
 
@@ -105,6 +105,9 @@ func (c Auth) Login() revel.Result {
 	msg := make(map[string]string)
 	msg["result"] = "login success"
 	msg["token"] = encodeToken(email)
+	msg["user_id"] = fmt.Sprint(user.ID)
+	msg["user_name"] = user.Name
+	msg["user_email"] = user.Email
 	c.Response.Status = http.StatusCreated
 	return c.RenderJSON(msg)
 }

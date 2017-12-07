@@ -14,12 +14,12 @@ GET     /                                       Static.Serve("examples/ionic/app
 POST    /login                                  Auth.Login
 POST    /register                               Auth.Register
 
-# Nodes (CRUD example)
-GET     /nodes                                  Node.List
-POST    /node                                   Node.Create
-GET     /node/:id                               Node.Read
-UPDATE  /node/:id                               Node.Update
-DELETE  /node/:id                               Node.Delete
+# Items (CRUD example)
+GET     /items                                  Item.List
+POST    /item                                   Item.Create
+GET     /item/:id                               Item.Read
+UPDATE  /item/:id                               Item.Update
+DELETE  /item/:id                               Item.Delete
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
